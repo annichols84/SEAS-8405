@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    
+    # Prevent privilege escalation  
+    security_opt:
+      - no-new-privileges:true  
+    
+    # Limit memory & CPU to prevent resource exhaustion attacks  
+    deploy:
+      resources:
+        limits:
+          memory: 512m  
+          cpus: "0.5"
+    
+    # Restrict container network exposure  
+    networks:
+      default:
+        ipv4_address: 127.0.0.1  
+    
+    # Enforce read-only filesystem to prevent unauthorized modifications  
+    read_only: true  
+    
+    # Drop unnecessary Linux capabilities for security  
+    cap_drop:
+      - NET_RAW
+      - SYS_MODULE
+      - SYS_ADMIN
